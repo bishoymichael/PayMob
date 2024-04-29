@@ -1,10 +1,12 @@
 const axios = require('axios');
+const opn = require('opn');
 
 const API_KEY = "ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0o5LmV5SmpiR0Z6Y3lJNklrMWxjbU5vWVc1MElpd2ljSEp2Wm1sc1pWOXdheUk2T1RjeU5URTFMQ0p1WVcxbElqb2lhVzVwZEdsaGJDSjkucGFUODlOZkJ5MnEtS0RhMC0wVXZYQkthdkc0cEdTVVc2YjJzQXJ6OGlzbmVaaWJCZDRQdDJkZ0FtSHpJaFZYaUJQMmZ2TFc3RHVveHRrOXU1Y3dYRlE=";
 const tokenUrl = 'https://accept.paymob.com/api/auth/tokens';
 const orderUrl = 'https://accept.paymob.com/api/ecommerce/orders';
 const paymentKeyUrl = 'https://accept.paymob.com/api/acceptance/payment_keys';
 const integrationID = 4560739;
+const Iframe = 840046;
 
 function getTokenAndCreateOrder() {
     getToken()
@@ -18,7 +20,9 @@ function getTokenAndCreateOrder() {
                     getPaymentKey(token, amount, orderId)
                         .then(paymentKey => {
                             console.log('Payment key:', paymentKey);
-                            // Further processing with the payment key if needed
+                            const paymentLink = `https://accept.paymob.com/api/acceptance/iframes/${Iframe}?payment_token=${paymentKey}`;
+                            // Open the URL in a new tab
+                            opn(paymentLink);
                         })
                         .catch(error => {
                             console.error('Error fetching payment key:', error.message);
